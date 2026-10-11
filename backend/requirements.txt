@@ -7,4 +7,4 @@ pytest-asyncio
 httpx
 greenlet
 pydantic-settings
-pythonjsonlogger
+python-json-logger
