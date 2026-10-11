@@ -1,0 +1,35 @@
+﻿<div style="padding: 2rem; font-family: sans-serif; background-color: #f8fafc; min-height: 100vh;">
+  <header style="margin-bottom: 2rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+    <h1 style="font-size: 1.875rem; font-weight: bold; margin: 0;">Enterprise MLOps Platform</h1>
+    <p style="color: #64748b; margin-top: 0.5rem;">Model Registry, Deployment Governance & Telemetry</p>
+  </header>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <section style="background: white; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+      <h2>Model Inventory</h2>
+      <div *ngIf="loading">Loading models...</div>
+      <div *ngIf="error" style="color: red;">{{ error }}</div>
+      <ul style="list-style: none; padding: 0;" *ngIf="!loading && !error">
+        <li *ngFor="let model of models" style="padding: 1rem 0; border-bottom: 1px solid #f1f5f9;">
+          <strong>{{ model.name }}</strong> <br>
+          <small style="color: #94a3b8;">ID: {{ model.id }}</small>
+        </li>
+        <li *ngIf="models.length === 0" style="color: #94a3b8;">No models registered yet.</li>
+      </ul>
+    </section>
+
+    <section style="background: white; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+      <h2>Active Deployments</h2>
+      <div *ngFor="let dep of deployments" style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.375rem; display: flex; justify-content: space-between;">
+        <div>
+          <strong>{{ dep.version_id }} ({{ dep.environment }})</strong><br>
+          <small>State: <b>{{ dep.state }}</b></small>
+        </div>
+        <button *ngIf="dep.state === 'SUCCEEDED' && dep.environment === 'PRODUCTION'" (click)="rollback(dep.id)" style="background: #ef4444; color: white; border: none; border-radius: 0.25rem; padding: 0.5rem 1rem; cursor: pointer;">
+          Rollback
+        </button>
+      </div>
+      <div *ngIf="deployments.length === 0" style="color: #94a3b8;">No active deployments.</div>
+    </section>
+  </div>
+</div>
